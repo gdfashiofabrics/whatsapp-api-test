@@ -27,7 +27,7 @@ app.get("/send-test", async (req, res) => {
         },
         body: JSON.stringify({
           messaging_product: "whatsapp",
-          to: "919330815334",
+          to: "919831215334",
           type: "text",
           text: {
             body: "Hello! This is your first WhatsApp API test message 🚀",
