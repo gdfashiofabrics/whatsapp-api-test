@@ -1,33 +1,33 @@
-import express from "express";
-import fetch from "node-fetch";
+const express = require("express");
+const fetch = require("node-fetch");
 
 const app = express();
 app.use(express.json());
 
+const PORT = process.env.PORT || 3000;
+
+// ✅ ROOT HEALTH CHECK
 app.get("/", (req, res) => {
-  res.send("WhatsApp API server running");
+  res.send("WhatsApp API server is running");
 });
 
+// ✅ SEND TEST MESSAGE
 app.get("/send-test", async (req, res) => {
   try {
-    const phoneNumberId = process.env.PHONE_NUMBER_ID;
-    const token = process.env.WHATSAPP_TOKEN;
-
     const response = await fetch(
-      `https://graph.facebook.com/v19.0/${phoneNumberId}/messages`,
+      `https://graph.facebook.com/v18.0/${process.env.PHONE_NUMBER_ID}/messages`,
       {
         method: "POST",
         headers: {
-          "Authorization": `Bearer ${token}`,
+          "Authorization": `Bearer ${process.env.WHATSAPP_TOKEN}`,
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
           messaging_product: "whatsapp",
-          to: "919831215334",
-          type: "template",
-          template: {
-            name: "hello_world",
-            language: { code: "en_US" }
+          to: "919330815334",   // 👈 your number, country code included
+          type: "text",
+          text: {
+            body: "Hello 👋 This is your first WhatsApp API test message."
           }
         })
       }
@@ -35,11 +35,12 @@ app.get("/send-test", async (req, res) => {
 
     const data = await response.json();
     res.json(data);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
 });
 
-app.listen(3000, () => {
-  console.log("Server running on port 3000");
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });
+
