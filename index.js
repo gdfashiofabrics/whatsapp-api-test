@@ -38,7 +38,9 @@ app.post("/send-template", async (req, res) => {
 
     const data = await response.json();
     res.json(data);
+
   } catch (err) {
+    console.error(err);
     res.status(500).json(err);
   }
 });
@@ -46,11 +48,5 @@ app.post("/send-template", async (req, res) => {
 const PORT = process.env.PORT || 10000;
 app.listen(PORT, () => {
   console.log("Server running on port", PORT);
-});
-
-
-  } catch (err) {
-    res.status(500).json(err);
-  }
 });
 
