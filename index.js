@@ -1,3 +1,9 @@
+const express = require("express");
+const fetch = require("node-fetch");
+
+const app = express();
+app.use(express.json());
+
 app.post("/send-template", async (req, res) => {
   const { name } = req.body;
 
@@ -7,7 +13,7 @@ app.post("/send-template", async (req, res) => {
       {
         method: "POST",
         headers: {
-          "Authorization": `Bearer ${process.env.WHATSAPP_TOKEN}`,
+          Authorization: `Bearer ${process.env.WHATSAPP_TOKEN}`,
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
@@ -32,6 +38,16 @@ app.post("/send-template", async (req, res) => {
 
     const data = await response.json();
     res.json(data);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
+const PORT = process.env.PORT || 10000;
+app.listen(PORT, () => {
+  console.log("Server running on port", PORT);
+});
+
 
   } catch (err) {
     res.status(500).json(err);
